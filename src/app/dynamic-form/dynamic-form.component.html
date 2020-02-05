@@ -1,0 +1,74 @@
+<div class="container mt-4">
+    <form (ngSubmit)="onSubmit()" [formGroup]="form">
+        <app-form-control-element [element]="element" [form]="form" *ngFor="let element of formData">
+        </app-form-control-element>
+        <div class="form-row">
+            <button type="submit" [disabled]="!form.valid" class="btn btn-success">Submit</button>
+        </div>
+        <div class="form-row mt-2">
+            <button type="submit" class="btn btn-primary" data-toggle="modal" data-target="#showNewElement">Add
+                Component</button>
+        </div>
+        <div class="form-row mt-2">
+            <button type="button" class="btn btn-info" (click)="downloadJSON()">Download JSON</button>
+        </div>
+    </form>
+
+    <div *ngIf="payLoad" class="form-row">
+        <strong>Saved the following values</strong><br>{{payLoad}}
+    </div>
+</div>
+
+<a id="downloadAnchorElem" style="display:none"></a>
+
+
+<!-- Modal -->
+<div class="modal fade" id="showNewElement" tabindex="-1" role="dialog" aria-labelledby="showNewElementTitle"
+    aria-hidden="true">
+    <div class="modal-dialog modal-dialog-scrollable" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="showNewElementTitle">Modal title</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div>
+                    <div class="form-check form-check-inline" *ngFor="let option of radioElementView;let i=index">
+                        <input class=" form-check-input" type="radio" name="componentOptions" [value]="option.value"
+                            (change)="viewElement(option.value)" [checked]="!i">
+                        <label class="form-check-label" for="inlineRadio1">{{option.label}}</label>
+                    </div>
+                </div>
+
+                <!-- show common field -->
+                <div>
+                    Value <input type="text" class="form-control" [(ngModel)]="elementValue">
+                    keyName <input type="text" class="form-control" [(ngModel)]="elementKey">
+                    Order <input type="number" class="form-control" [(ngModel)]="elementOrder" min="1"
+                        [max]="formData.length">
+                </div>
+
+                <div [ngSwitch]="selectedElement">
+                    <div *ngSwitchCase="'label'">
+                    </div>
+                    <div *ngSwitchCase="'textbox'">
+                        label <input type="text" class="form-control" [(ngModel)]="elementLabel">
+                        <div class="form-check form-check-inline" *ngFor="let option of textBoxTypes;let i=index">
+                            <input class="form-check-input" type="radio" name="textBoxTypes" [value]="option.value"
+                                (change)="getSelectedTextBoxType(option.value)" [checked]="!i">
+                            <label class="form-check-label" for="inlineRadio1">{{option.label}}</label>
+                        </div>
+                    </div>
+                    <div *ngSwitchCase="'radio'"></div>
+                    <div *ngSwitchCase="'dropdown'"></div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary" data-dismiss="modal" (click)="addComponent()">Add</button>
+            </div>
+        </div>
+    </div>
+</div>

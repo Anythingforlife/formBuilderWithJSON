@@ -1,0 +1,19 @@
+<!-- value - {{element.value}} -->
+
+<div [formGroup]="form">
+    <div [ngSwitch]="element.controlType" class="form-group">
+        <p *ngSwitchCase="'label'">{{element.value}}</p>
+        <input *ngSwitchCase="'textbox'" [formControlName]="element.key" [id]="element.key" [type]="element.type"
+            class="form-control">
+        <select [id]="element.key" *ngSwitchCase="'dropdown'" [formControlName]="element.key" class="form-control">
+            <option *ngFor="let opt of element.options" [value]="opt.key">{{opt.value}}</option>
+        </select>
+        <div *ngSwitchCase="'radio'">
+            <div class="form-check form-check-inline" *ngFor="let option of element.options">
+                <input class="form-check-input" type="radio" [name]="element.name" [value]="element.value"
+                    [checked]="element.value===option.value">
+                <label class="form-check-label" for="inlineRadio1">{{option.label}}</label>
+            </div>
+        </div>
+    </div>
+</div>
